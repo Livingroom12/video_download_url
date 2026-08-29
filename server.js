@@ -18,18 +18,18 @@ app.post('/download', (req, res) => {
     res.header('Content-Disposition', 'attachment; filename="video.mp4"');
     res.header('Content-Type', 'video/mp4');
 
-    // 直接 system yt-dlp binary execute કરશે
+    // Universal args: બધી જ સાઈટ્સ માટે વર્ક કરશે
     const ytDlpProcess = spawn('yt-dlp', [
         videoURL,
         '-o', '-',
-        '-f', 'best',
-        '--extractor-args', 'youtube:player_client=android'
+        '-f', 'b/best', // Universal format selector (બધી સાઈટ માટે ચાલે)
+        '--no-playlist'
     ]);
 
     ytDlpProcess.stdout.pipe(res);
 
     ytDlpProcess.stderr.on('data', (data) => {
-        console.error(`yt-dlp log: ${data}`);
+        console.error(`yt-dlp log: ${data.toString()}`);
     });
 
     ytDlpProcess.on('error', (err) => {
