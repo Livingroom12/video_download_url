@@ -18,22 +18,22 @@ app.post('/download', (req, res) => {
     res.header('Content-Disposition', 'attachment; filename="video.mp4"');
     res.header('Content-Type', 'video/mp4');
 
-    // Universal args: બધી જ સાઈટ્સ માટે વર્ક કરશે
+    // yt-dlp ને સીધું mp4 અને m4a કમ્બાઈન કરીને મોકલવા માટેનો કમાંડ
     const ytDlpProcess = spawn('yt-dlp', [
         videoURL,
         '-o', '-',
-        '-f', 'b/best', // Universal format selector (બધી સાઈટ માટે ચાલે)
+        '-f', 'bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4]/best[ext=mp4]/best',
         '--no-playlist'
     ]);
 
     ytDlpProcess.stdout.pipe(res);
 
     ytDlpProcess.stderr.on('data', (data) => {
-        console.error(`yt-dlp log: ${data.toString()}`);
+        console.error(`yt-dlp error output: ${data.toString()}`);
     });
 
     ytDlpProcess.on('error', (err) => {
-        console.error('Process Error:', err);
+        console.error('Process Fail:', err);
         if (!res.headersSent) {
             res.status(500).json({ error: 'Download failed', details: err.message });
         }
