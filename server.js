@@ -18,23 +18,52 @@ app.post('/download', async (req, res) => {
 
         console.log(`Downloading from URL: ${videoURL}`);
 
-        res.header('Content-Disposition', 'attachment; filename="video.mp4"');
-        res.header('Content-Type', 'video/mp4');
-
         const ytDlpProcess = ytdlp.exec(videoURL, {
             output: '-',
-            format: 'best',
+            format: 'best[ext=mp4]/best',
             extractorArgs: 'youtube:player_client=android'
         }, {
-            stdio: ['ignore', 'pipe', 'ignore']
+            stdio: ['ignore', 'pipe', 'pipe']  // stderr have pipe kari lidhu, log mate
         });
 
-        ytDlpProcess.stdout.pipe(res);
+        let headersSet = false;
+        let errorOutput = '';
+
+        ytDlpProcess.stderr.on('data', (data) => {
+            errorOutput += data.toString();
+            console.error('yt-dlp stderr:', data.toString());
+        });
+
+        ytDlpProcess.stdout.once('data', (chunk) => {
+            if (!headersSet) {
+                res.header('Content-Disposition', 'attachment; filename="video.mp4"');
+                res.header('Content-Type', 'video/mp4');
+                headersSet = true;
+            }
+            res.write(chunk);
+        });
+
+        ytDlpProcess.stdout.on('data', (chunk) => {
+            if (headersSet) res.write(chunk);
+        });
+
+        ytDlpProcess.stdout.on('end', () => {
+            res.end();
+        });
 
         ytDlpProcess.on('error', (err) => {
             console.error('Process Error:', err);
             if (!res.headersSent) {
                 res.status(500).json({ error: 'Error occurred while downloading video.', details: err.message });
+            }
+        });
+
+        ytDlpProcess.on('close', (code) => {
+            if (code !== 0 && !headersSet) {
+                console.error('yt-dlp exited with code', code, errorOutput);
+                if (!res.headersSent) {
+                    res.status(500).json({ error: 'Video download failed.', details: errorOutput.slice(0, 300) });
+                }
             }
         });
 
