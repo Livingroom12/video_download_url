@@ -1,20 +1,24 @@
 FROM node:18-slim
 
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     python3 \
     ffmpeg \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-RUN curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp \
-    && chmod a+rx /usr/local/bin/yt-dlp
-
 WORKDIR /app
 
+# Copy package files
 COPY package*.json ./
-RUN npm install
 
+# Bypass binary download issue during npm install
+ENV YTDLP_SKIP_PYTHON_CHECK=true
+
+RUN npm install --unsafe-perm
+
+# Copy rest of the code
 COPY . .
 
 EXPOSE 3000
-CMD ["node", "server.js"]
+CMD ["npm", "start"]
