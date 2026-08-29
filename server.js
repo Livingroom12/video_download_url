@@ -8,34 +8,35 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.post('/download', (req, res) => {
-    const videoURL = req.body.url;
+app.get('/download', (req, res) => {
+    const videoURL = req.query.url;
 
     if (!videoURL) {
-        return res.status(400).json({ error: 'Please provide a URL.' });
+        return res.status(400).send('Please provide a URL.');
     }
 
+    // વિડીયો ફાઈલનું નામ સેટ કરો
     res.header('Content-Disposition', 'attachment; filename="video.mp4"');
     res.header('Content-Type', 'video/mp4');
 
-    // yt-dlp ને સીધું mp4 અને m4a કમ્બાઈન કરીને મોકલવા માટેનો કમાંડ
+    // Single pre-merged progressive format વાપરો જે સીધું સ્ટીમિંગ સપોર્ટ કરે
     const ytDlpProcess = spawn('yt-dlp', [
         videoURL,
         '-o', '-',
-        '-f', 'bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4]/best[ext=mp4]/best',
+        '-f', 'b[ext=mp4]/best[ext=mp4]/b/best',
         '--no-playlist'
     ]);
 
     ytDlpProcess.stdout.pipe(res);
 
     ytDlpProcess.stderr.on('data', (data) => {
-        console.error(`yt-dlp error output: ${data.toString()}`);
+        console.error(`yt-dlp log: ${data.toString()}`);
     });
 
     ytDlpProcess.on('error', (err) => {
         console.error('Process Fail:', err);
         if (!res.headersSent) {
-            res.status(500).json({ error: 'Download failed', details: err.message });
+            res.status(500).send('Download failed');
         }
     });
 });
