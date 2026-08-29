@@ -5,14 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Downloader</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #f4f4f4; display: flex; align-items: center; justify-content: center; height: 100vh; }
-        .box { background: #fff; padding: 30px 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 100%; max-width: 450px; }
-        h2 { margin-bottom: 20px; color: #333; text-align: center; }
-        input[type="text"] { width: 100%; padding: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 15px; }
-        button { width: 100%; padding: 10px; font-size: 15px; background: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        button:hover { background: #0056b3; }
-        #status { margin-top: 15px; text-align: center; font-size: 14px; color: #555; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .box {
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 15px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+        button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.4);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            display: none;
+        }
+        .spinner.show {
+            display: inline-block;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        #status {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+        }
     </style>
 </head>
 <body>
@@ -20,24 +90,61 @@
         <h2>Video Downloader</h2>
         <form id="downloadForm">
             <input type="text" id="videoUrl" name="url" placeholder="Enter video URL" required>
-            <button type="submit" id="submitBtn">Download</button>
+            <button type="submit" id="submitBtn">
+                <span class="spinner" id="spinner"></span>
+                <span id="btnText">Download</span>
+            </button>
         </form>
         <div id="status"></div>
     </div>
 
     <script>
         const form = document.getElementById('downloadForm');
+        const btn = document.getElementById('submitBtn');
+        const spinner = document.getElementById('spinner');
+        const btnText = document.getElementById('btnText');
         const status = document.getElementById('status');
 
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const url = document.getElementById('videoUrl').value.trim();
             if (!url) return;
 
-            status.textContent = 'Starting download...';
-            
-            // સીધું ડાઉનલોડ ટ્રિગર કરો (આનાથી કરપ્ટ ફાઈલનો પ્રોબ્લેમ જતો રહેશે)
-            window.location.href = `/download?url=${encodeURIComponent(url)}`;
+            btn.disabled = true;
+            spinner.classList.add('show');
+            btnText.textContent = 'Downloading...';
+            status.textContent = 'Processing video, please wait...';
+
+            try {
+                const response = await fetch('/download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+
+                if (!response.ok) {
+                    const err = await response.json();
+                    throw new Error(err.error || 'Download failed.');
+                }
+
+                const blob = await response.blob();
+                const downloadUrl = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = downloadUrl;
+                a.download = 'video.mp4';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(downloadUrl);
+
+                status.textContent = 'Download complete!';
+            } catch (err) {
+                status.textContent = 'Error: ' + err.message;
+            } finally {
+                btn.disabled = false;
+                spinner.classList.remove('show');
+                btnText.textContent = 'Download';
+            }
         });
     </script>
 </body>
