@@ -7,15 +7,17 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
+# Download yt-dlp binary manually
+RUN curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp \
+    && chmod a+rx /usr/local/bin/yt-dlp
+
 WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
 
-# Bypass binary download issue during npm install
-ENV YTDLP_SKIP_PYTHON_CHECK=true
-
-RUN npm install --unsafe-perm
+# Ignore post-install download scripts during npm install
+RUN npm install --ignore-scripts
 
 # Copy rest of the code
 COPY . .
