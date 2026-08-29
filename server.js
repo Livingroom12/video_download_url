@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const ytdlp = require('yt-dlp-exec');
+const { spawn } = require('child_process');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -8,42 +8,36 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.post('/download', async (req, res) => {
-    try {
-        const videoURL = req.body.url;
+app.post('/download', (req, res) => {
+    const videoURL = req.body.url;
 
-        if (!videoURL) {
-            return res.status(400).json({ error: 'Please provide a URL.' });
-        }
-
-        console.log(`Downloading from URL: ${videoURL}`);
-
-        res.header('Content-Disposition', 'attachment; filename="video.mp4"');
-        res.header('Content-Type', 'video/mp4');
-
-        const ytDlpProcess = ytdlp.exec(videoURL, {
-            output: '-',
-            format: 'best',
-            extractorArgs: 'youtube:player_client=android'
-        }, {
-            stdio: ['ignore', 'pipe', 'ignore']
-        });
-
-        ytDlpProcess.stdout.pipe(res);
-
-        ytDlpProcess.on('error', (err) => {
-            console.error('Process Error:', err);
-            if (!res.headersSent) {
-                res.status(500).json({ error: 'Error occurred while downloading video.', details: err.message });
-            }
-        });
-
-    } catch (error) {
-        console.error('Error:', error.message);
-        if (!res.headersSent) {
-            res.status(500).json({ error: 'Error occurred while downloading video.', details: error.message });
-        }
+    if (!videoURL) {
+        return res.status(400).json({ error: 'Please provide a URL.' });
     }
+
+    res.header('Content-Disposition', 'attachment; filename="video.mp4"');
+    res.header('Content-Type', 'video/mp4');
+
+    // 直接 system yt-dlp binary execute કરશે
+    const ytDlpProcess = spawn('yt-dlp', [
+        videoURL,
+        '-o', '-',
+        '-f', 'best',
+        '--extractor-args', 'youtube:player_client=android'
+    ]);
+
+    ytDlpProcess.stdout.pipe(res);
+
+    ytDlpProcess.stderr.on('data', (data) => {
+        console.error(`yt-dlp log: ${data}`);
+    });
+
+    ytDlpProcess.on('error', (err) => {
+        console.error('Process Error:', err);
+        if (!res.headersSent) {
+            res.status(500).json({ error: 'Download failed', details: err.message });
+        }
+    });
 });
 
 app.listen(PORT, () => {
