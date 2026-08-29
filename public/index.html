@@ -104,10 +104,11 @@
         const spinner = document.getElementById('spinner');
         const btnText = document.getElementById('btnText');
         const status = document.getElementById('status');
+        const urlInput = document.getElementById('videoUrl');
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const url = document.getElementById('videoUrl').value.trim();
+            const url = urlInput.value.trim();
             if (!url) return;
 
             btn.disabled = true;
@@ -138,6 +139,7 @@
                 window.URL.revokeObjectURL(downloadUrl);
 
                 status.textContent = 'Download complete!';
+                urlInput.value = ''; // clear the URL field after a successful download
             } catch (err) {
                 status.textContent = 'Error: ' + err.message;
             } finally {
