@@ -4,99 +4,359 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Downloader</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --ink: #1b1340;
+            --violet: #5b3df5;
+            --violet-dark: #4529d6;
+            --pink: #ff4d8d;
+            --orange: #ff9a3d;
+            --bg: #f6f5fb;
+            --card: #ffffff;
+            --text: #2a2550;
+            --muted: #6c688a;
+            --line: #e4e1f2;
+            --ok: #0f9d6b;
+            --err: #d63c4a;
         }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
+            font-family: "Plus Jakarta Sans", "Segoe UI", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* header */
+        .nav {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 20px 24px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
+            justify-content: space-between;
         }
-        .box {
-            background: #fff;
-            padding: 30px 40px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 450px;
+        .logo {
+            font-weight: 800;
+            font-size: 20px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
         }
-        h2 {
-            margin-bottom: 20px;
-            color: #333;
+        .logo-mark {
+            width: 32px; height: 32px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--orange), var(--pink));
+            display: grid; place-items: center;
+        }
+        .logo-mark svg { width: 16px; height: 16px; fill: #fff; }
+        .nav a.link { color: #d9d4ff; text-decoration: none; font-size: 14px; margin-left: 22px; }
+        .nav a.link:hover { color: #fff; }
+
+        /* hero */
+        .hero {
+            background:
+                radial-gradient(600px 300px at 85% 0%, rgba(255,77,141,.35), transparent 70%),
+                radial-gradient(500px 300px at 10% 100%, rgba(91,61,245,.55), transparent 70%),
+                var(--ink);
+            padding-bottom: 150px;
+        }
+        .hero-inner {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 40px 24px 0;
             text-align: center;
         }
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 15px;
+        h1 {
+            color: #fff;
+            font-size: clamp(30px, 6vw, 48px);
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin-bottom: 14px;
         }
-        button {
+        .sub { color: #cfc9f7; font-size: 17px; max-width: 520px; margin: 0 auto; }
+
+        /* downloader card */
+        .box {
+            background: var(--card);
+            max-width: 720px;
+            margin: -100px auto 0;
+            padding: 28px;
+            border-radius: 20px;
+            box-shadow: 0 24px 60px rgba(27,19,64,.22);
+            width: calc(100% - 32px);
+        }
+        .field {
+            display: flex;
+            border: 2px solid var(--line);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: border-color .15s;
+        }
+        .field:focus-within { border-color: var(--violet); }
+        input[type="text"] {
+            flex: 1;
+            min-width: 0;
+            padding: 16px 18px;
+            font: inherit;
+            font-size: 16px;
+            border: none;
+            outline: none;
+            color: var(--text);
+            background: transparent;
+        }
+        input[type="text"]::placeholder { color: #a5a2bf; }
+        .paste {
+            border: none;
+            background: #efecff;
+            color: var(--violet);
+            font: inherit;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 0 20px;
+            cursor: pointer;
+            width: auto;
+        }
+        .paste:hover { background: #e2ddff; }
+
+        button#submitBtn {
             width: 100%;
-            padding: 10px;
-            font-size: 15px;
-            background: #007bff;
+            margin-top: 14px;
+            padding: 16px;
+            font: inherit;
+            font-size: 16px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--violet), var(--violet-dark));
             color: #fff;
             border: none;
-            border-radius: 5px;
+            border-radius: 14px;
             cursor: pointer;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-        button:disabled {
-            background: #999;
-            cursor: not-allowed;
-        }
-        button {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
+            transition: transform .1s, box-shadow .15s;
+            box-shadow: 0 8px 20px rgba(91,61,245,.35);
         }
+        button#submitBtn:hover { box-shadow: 0 10px 26px rgba(91,61,245,.5); }
+        button#submitBtn:active { transform: translateY(1px); }
+        button#submitBtn:disabled { background: #9b98b8; box-shadow: none; cursor: not-allowed; }
+        button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid var(--pink); outline-offset: 2px; }
+
         .spinner {
-            width: 16px;
-            height: 16px;
+            width: 18px; height: 18px;
             border: 2px solid rgba(255,255,255,0.4);
             border-top-color: #fff;
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
             display: none;
         }
-        .spinner.show {
-            display: inline-block;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        .spinner.show { display: inline-block; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
         #status {
-            margin-top: 15px;
+            margin-top: 14px;
             text-align: center;
             font-size: 14px;
-            color: #555;
+            color: var(--muted);
+            min-height: 22px;
         }
+        #status.ok { color: var(--ok); font-weight: 700; }
+        #status.error { color: var(--err); font-weight: 700; }
+
+        /* steps */
+        .section { max-width: 900px; margin: 0 auto; padding: 72px 24px 24px; }
+        h2 { font-size: 26px; font-weight: 800; letter-spacing: -0.01em; text-align: center; margin-bottom: 36px; }
+        .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; list-style: none; counter-reset: s; }
+        .steps li {
+            counter-increment: s;
+            padding: 22px;
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            font-size: 15px;
+            color: var(--muted);
+        }
+        .steps li::before {
+            content: counter(s);
+            display: grid; place-items: center;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--orange), var(--pink));
+            color: #fff;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+        .steps strong { display: block; color: var(--text); font-size: 16px; margin-bottom: 4px; }
+
+        /* faq */
+        .faq { max-width: 720px; margin: 0 auto; }
+        .faq details {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            margin-bottom: 12px;
+        }
+        .faq summary {
+            cursor: pointer;
+            list-style: none;
+            padding: 18px 22px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+        .faq summary::-webkit-details-marker { display: none; }
+        .faq summary::after {
+            content: "+";
+            font-size: 22px;
+            font-weight: 500;
+            color: var(--violet);
+            transition: transform .2s;
+        }
+        .faq details[open] { border-color: var(--violet); }
+        .faq details[open] summary::after { transform: rotate(45deg); }
+        .faq p { padding: 0 22px 18px; color: var(--muted); font-size: 15px; }
+
+        /* footer */
+        footer { background: var(--ink); color: #b9b3e6; margin-top: 72px; }
+        .foot-inner {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 44px 24px 28px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 32px;
+        }
+        footer .logo { margin-bottom: 12px; }
+        footer p { font-size: 14px; max-width: 340px; }
+        footer h3 { color: #fff; font-size: 15px; margin-bottom: 12px; }
+        footer ul { list-style: none; }
+        footer li { margin-bottom: 8px; }
+        footer li a { color: #b9b3e6; text-decoration: none; font-size: 14px; }
+        footer li a:hover { color: #fff; }
+        .copy {
+            border-top: 1px solid rgba(255,255,255,.12);
+            text-align: center;
+            font-size: 13px;
+            padding: 18px 24px;
+        }
+
+        @media (max-width: 640px) {
+            .steps { grid-template-columns: 1fr; }
+            .foot-inner { grid-template-columns: 1fr; }
+            .box { padding: 20px; }
+            .field { flex-direction: column; }
+            .paste { padding: 12px; }
+            .nav a.link { display: none; }
+        }
+        @media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 2s; } }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h2>Video Downloader</h2>
-        <form id="downloadForm">
-            <input type="text" id="videoUrl" name="url" placeholder="Enter video URL" required>
-            <button type="submit" id="submitBtn">
-                <span class="spinner" id="spinner"></span>
-                <span id="btnText">Download</span>
-            </button>
-        </form>
-        <div id="status"></div>
-    </div>
+    <header class="hero">
+        <nav class="nav">
+            <a class="logo" href="/">
+                <span class="logo-mark"><svg viewBox="0 0 24 24"><path d="M12 3v10.6l3.8-3.8 1.4 1.4L12 16.4l-5.2-5.2 1.4-1.4L12 13.6V3h0zM5 19h14v2H5z"/></svg></span>
+                Video Downloader
+            </a>
+            <div>
+                <a class="link" href="#how">How it works</a>
+                <a class="link" href="#top">Download</a>
+            </div>
+        </nav>
+        <div class="hero-inner">
+            <h1>Save any video with just a link</h1>
+            <p class="sub">Paste the video URL, press download, and get an MP4 on your device.</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="box" id="top">
+            <form id="downloadForm">
+                <div class="field">
+                    <input type="text" id="videoUrl" name="url" placeholder="Paste video URL here" required autocomplete="off">
+                    <button type="button" class="paste" id="pasteBtn">Paste</button>
+                </div>
+                <button type="submit" id="submitBtn">
+                    <span class="spinner" id="spinner"></span>
+                    <span id="btnText">Download</span>
+                </button>
+            </form>
+            <div id="status" role="status" aria-live="polite"></div>
+        </div>
+
+        <section class="section" id="how">
+            <h2>How it works</h2>
+            <ol class="steps">
+                <li><strong>Copy the link</strong>Open the video and copy its URL from the share menu.</li>
+                <li><strong>Paste it above</strong>Use the Paste button or press Ctrl+V in the box.</li>
+                <li><strong>Press Download</strong>Wait a few seconds and the MP4 saves automatically.</li>
+            </ol>
+        </section>
+
+        <section class="section" id="faq">
+            <h2>Frequently asked questions</h2>
+            <div class="faq">
+                <details>
+                    <summary>Is this video downloader free?</summary>
+                    <p>Yes. You can paste a link and download as many videos as you like without paying or creating an account.</p>
+                </details>
+                <details>
+                    <summary>Which links does it support?</summary>
+                    <p>Paste the direct URL of a public video. Private videos, or links that need a login, cannot be downloaded.</p>
+                </details>
+                <details>
+                    <summary>Where is my video saved?</summary>
+                    <p>The file is saved as video.mp4 in your browser's default Downloads folder. On a phone, check the Files or Downloads app.</p>
+                </details>
+                <details>
+                    <summary>Why did I get an error?</summary>
+                    <p>Check that the link is complete and the video is public, then try again. If it still fails, the video may have been removed.</p>
+                </details>
+                <details>
+                    <summary>Is it legal to download videos?</summary>
+                    <p>Only download videos you own or have permission to save. Respect the creator's copyright and the source site's terms.</p>
+                </details>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="foot-inner">
+            <div>
+                <a class="logo" href="/">
+                    <span class="logo-mark"><svg viewBox="0 0 24 24"><path d="M12 3v10.6l3.8-3.8 1.4 1.4L12 16.4l-5.2-5.2 1.4-1.4L12 13.6V3h0zM5 19h14v2H5z"/></svg></span>
+                    Video Downloader
+                </a>
+                <p>Paste a video link and save it as an MP4. Fast, free and simple.</p>
+            </div>
+            <div>
+                <h3>Quick links</h3>
+                <ul>
+                    <li><a href="#top">Download</a></li>
+                    <li><a href="#how">How it works</a></li>
+                    <li><a href="#faq">FAQs</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="/privacy">Privacy policy</a></li>
+                    <li><a href="/terms">Terms of use</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copy">&copy; 2026 Video Downloader. Only download videos you have permission to save.</div>
+    </footer>
 
     <script>
         const form = document.getElementById('downloadForm');
@@ -105,6 +365,21 @@
         const btnText = document.getElementById('btnText');
         const status = document.getElementById('status');
         const urlInput = document.getElementById('videoUrl');
+        const pasteBtn = document.getElementById('pasteBtn');
+
+        function setStatus(msg, type) {
+            status.textContent = msg;
+            status.className = type || '';
+        }
+
+        pasteBtn.addEventListener('click', async () => {
+            try {
+                urlInput.value = (await navigator.clipboard.readText()).trim();
+                urlInput.focus();
+            } catch (e) {
+                setStatus('Clipboard blocked. Press Ctrl+V in the box instead.', 'error');
+            }
+        });
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -114,7 +389,7 @@
             btn.disabled = true;
             spinner.classList.add('show');
             btnText.textContent = 'Downloading...';
-            status.textContent = 'Processing video, please wait...';
+            setStatus('Processing video, please wait...');
 
             try {
                 const response = await fetch('/download', {
@@ -138,10 +413,10 @@
                 a.remove();
                 window.URL.revokeObjectURL(downloadUrl);
 
-                status.textContent = 'Download complete!';
-                urlInput.value = ''; // clear the URL field after a successful download
+                setStatus('Download complete!', 'ok');
+                urlInput.value = '';
             } catch (err) {
-                status.textContent = 'Error: ' + err.message;
+                setStatus('Error: ' + err.message, 'error');
             } finally {
                 btn.disabled = false;
                 spinner.classList.remove('show');
