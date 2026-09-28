@@ -1,97 +1,299 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Privacy Policy | Video Downloader</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
-<style>
-:root{--ink:#1b1340;--violet:#5b3df5;--pink:#ff4d8d;--orange:#ff9a3d;--bg:#f6f5fb;--card:#fff;--text:#2a2550;--muted:#6c688a;--line:#e4e1f2}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:"Plus Jakarta Sans","Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.7}
-.hero{background:radial-gradient(600px 300px at 85% 0%,rgba(255,77,141,.35),transparent 70%),radial-gradient(500px 300px at 10% 100%,rgba(91,61,245,.55),transparent 70%),var(--ink);padding-bottom:60px}
-.nav{max-width:1040px;margin:0 auto;padding:20px 24px;display:flex;align-items:center;justify-content:space-between}
-.logo{font-weight:800;font-size:20px;color:#fff;display:flex;align-items:center;gap:10px;text-decoration:none}
-.logo-mark{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--orange),var(--pink));display:grid;place-items:center}
-.logo-mark svg{width:16px;height:16px;fill:#fff}
-.nav a.link{color:#d9d4ff;text-decoration:none;font-size:14px;margin-left:22px}
-.nav a.link:hover{color:#fff}
-h1{color:#fff;text-align:center;font-size:clamp(28px,5vw,40px);font-weight:800;letter-spacing:-.02em;padding:36px 24px 6px}
-.upd{color:#cfc9f7;text-align:center;font-size:14px}
-.doc{max-width:760px;margin:-30px auto 0;background:var(--card);border-radius:20px;padding:36px 40px;box-shadow:0 24px 60px rgba(27,19,64,.15);width:calc(100% - 32px)}
-.doc h2{font-size:19px;font-weight:800;margin:28px 0 8px}
-.doc h2:first-child{margin-top:0}
-.doc p,.doc li{color:var(--muted);font-size:15px}
-.doc p{margin-bottom:10px}
-.doc ul{padding-left:22px;margin-bottom:10px}
-.doc a{color:var(--violet)}
-footer{background:var(--ink);color:#b9b3e6;margin-top:72px}
-.foot-inner{max-width:1040px;margin:0 auto;padding:44px 24px 28px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:32px}
-footer .logo{margin-bottom:12px}
-footer p{font-size:14px;max-width:340px}
-footer h3{color:#fff;font-size:15px;margin-bottom:12px}
-footer ul{list-style:none}
-footer li{margin-bottom:8px}
-footer li a{color:#b9b3e6;text-decoration:none;font-size:14px}
-footer li a:hover{color:#fff}
-.copy{border-top:1px solid rgba(255,255,255,.12);text-align:center;font-size:13px;padding:18px 24px}
-a:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
-@media(max-width:640px){.doc{padding:24px 20px}.foot-inner{grid-template-columns:1fr}.nav a.link{display:none}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy | Video Downloader</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <style>
+        :root {
+            --ink: #1b1340;
+            --violet: #5b3df5;
+            --pink: #ff4d8d;
+            --orange: #ff9a3d;
+            --bg: #f6f5fb;
+            --card: #fff;
+            --text: #2a2550;
+            --muted: #6c688a;
+            --line: #e4e1f2
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: "Plus Jakarta Sans", "Segoe UI", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7
+        }
+
+        .hero {
+            background: radial-gradient(600px 300px at 85% 0%, rgba(255, 77, 141, .35), transparent 70%), radial-gradient(500px 300px at 10% 100%, rgba(91, 61, 245, .55), transparent 70%), var(--ink);
+            padding-bottom: 60px
+        }
+
+        .nav {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 20px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none
+        }
+
+        .logo-mark {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--orange), var(--pink));
+            display: grid;
+            place-items: center
+        }
+
+        .logo-mark svg {
+            width: 16px;
+            height: 16px;
+            fill: #fff
+        }
+
+        .nav a.link {
+            color: #d9d4ff;
+            text-decoration: none;
+            font-size: 14px;
+            margin-left: 22px
+        }
+
+        .nav a.link:hover {
+            color: #fff
+        }
+
+        h1 {
+            color: #fff;
+            text-align: center;
+            font-size: clamp(28px, 5vw, 40px);
+            font-weight: 800;
+            letter-spacing: -.02em;
+            padding: 36px 24px 6px
+        }
+
+        .upd {
+            color: #cfc9f7;
+            text-align: center;
+            font-size: 14px
+        }
+
+        .doc {
+            max-width: 760px;
+            margin: -30px auto 0;
+            background: var(--card);
+            border-radius: 20px;
+            padding: 36px 40px;
+            box-shadow: 0 24px 60px rgba(27, 19, 64, .15);
+            width: calc(100% - 32px)
+        }
+
+        .doc h2 {
+            font-size: 19px;
+            font-weight: 800;
+            margin: 28px 0 8px
+        }
+
+        .doc h2:first-child {
+            margin-top: 0
+        }
+
+        .doc p,
+        .doc li {
+            color: var(--muted);
+            font-size: 15px
+        }
+
+        .doc p {
+            margin-bottom: 10px
+        }
+
+        .doc ul {
+            padding-left: 22px;
+            margin-bottom: 10px
+        }
+
+        .doc a {
+            color: var(--violet)
+        }
+
+        footer {
+            background: var(--ink);
+            color: #b9b3e6;
+            margin-top: 72px
+        }
+
+        .foot-inner {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 44px 24px 28px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 32px
+        }
+
+        footer .logo {
+            margin-bottom: 12px
+        }
+
+        footer p {
+            font-size: 14px;
+            max-width: 340px
+        }
+
+        footer h3 {
+            color: #fff;
+            font-size: 15px;
+            margin-bottom: 12px
+        }
+
+        footer ul {
+            list-style: none
+        }
+
+        footer li {
+            margin-bottom: 8px
+        }
+
+        footer li a {
+            color: #b9b3e6;
+            text-decoration: none;
+            font-size: 14px
+        }
+
+        footer li a:hover {
+            color: #fff
+        }
+
+        .copy {
+            border-top: 1px solid rgba(255, 255, 255, .12);
+            text-align: center;
+            font-size: 13px;
+            padding: 18px 24px
+        }
+
+        a:focus-visible {
+            outline: 3px solid var(--pink);
+            outline-offset: 2px
+        }
+
+        @media(max-width:640px) {
+            .doc {
+                padding: 24px 20px
+            }
+
+            .foot-inner {
+                grid-template-columns: 1fr
+            }
+
+            .nav a.link {
+                display: none
+            }
+        }
+    </style>
 </head>
+
 <body>
-<header class="hero">
-<nav class="nav">
-<a class="logo" href="/"><span class="logo-mark"><svg viewBox="0 0 24 24"><path d="M12 3v10.6l3.8-3.8 1.4 1.4L12 16.4l-5.2-5.2 1.4-1.4L12 13.6V3h0zM5 19h14v2H5z"/></svg></span>Video Downloader</a>
-<div><a class="link" href="/">Home</a><a class="link" href="/#faq">FAQs</a></div>
-</nav>
-<h1>Privacy Policy</h1>
-<p class="upd">Last updated: 28 September 2026</p>
-</header>
-<main class="doc">
-<h2>1. Overview</h2>
-<p>This policy explains what information Video Downloader ("we", "our", "the service") handles when you use this website. We keep data collection to the minimum needed to make the service work.</p>
-<h2>2. Information we collect</h2>
-<ul>
-<li><strong>Video links:</strong> the URL you paste is sent to our server so we can fetch the video for you.</li>
-<li><strong>Technical data:</strong> your IP address, browser type, device type and request time, recorded in standard server logs for security and to prevent abuse.</li>
-</ul>
-<p>We do not ask you to create an account, and we do not ask for your name, email or phone number to download a video.</p>
-<h2>3. How we use it</h2>
-<ul>
-<li>To process your request and deliver the video file to your device.</li>
-<li>To keep the service secure, fix errors and stop misuse such as automated flooding.</li>
-<li>To understand overall usage so we can improve performance.</li>
-</ul>
-<h2>4. Video files and storage</h2>
-<p>Videos are processed only to fulfil your request. Temporary files are deleted from our server after the download finishes or after a short period. We do not keep a library of downloaded videos.</p>
-<h2>5. Cookies</h2>
-<p>The site itself does not need cookies to work. If we add analytics or advertising services later, they may set their own cookies and we will update this page.</p>
-<h2>6. Sharing your information</h2>
-<p>We do not sell your personal information. We may share limited technical data with our hosting provider, or with authorities when the law requires it.</p>
-<h2>7. Data retention</h2>
-<p>Server logs are kept for a limited time, usually up to 30 days, and are then deleted or anonymised.</p>
-<h2>8. Your rights</h2>
-<p>You can ask us what technical data we hold about you, or ask us to delete it, by contacting us. We will respond within a reasonable time.</p>
-<h2>9. Children</h2>
-<p>The service is not directed at children under 13, and we do not knowingly collect their information.</p>
-<h2>10. Changes to this policy</h2>
-<p>We may update this policy from time to time. The date at the top shows when it last changed.</p>
-<h2>11. Contact</h2>
-<p>Questions about privacy? Email us at <a href="mailto:videodownloader04@gmail.com">videodownloader04@gmail.com</a>.</p>
-</main>
-<footer>
-<div class="foot-inner">
-<div>
-<a class="logo" href="/"><span class="logo-mark"><svg viewBox="0 0 24 24"><path d="M12 3v10.6l3.8-3.8 1.4 1.4L12 16.4l-5.2-5.2 1.4-1.4L12 13.6V3h0zM5 19h14v2H5z"/></svg></span>Video Downloader</a>
-<p>Paste a video link and save it as an MP4. Fast, free and simple.</p>
-</div>
-<div><h3>Quick links</h3><ul><li><a href="/">Download</a></li><li><a href="/#how">How it works</a></li><li><a href="/#faq">FAQs</a></li></ul></div>
-<div><h3>Legal</h3><ul><li><a href="/privacy">Privacy policy</a></li><li><a href="/terms">Terms of use</a></li></ul></div>
-</div>
-<div class="copy">&copy; 2026 Video Downloader. Only download videos you have permission to save.</div>
-</footer>
+    <header class="hero">
+        <nav class="nav">
+            <a class="logo" href="/"><span class="logo-mark"><svg viewBox="0 0 24 24">
+                        <path d="M12 3v10.6l3.8-3.8 1.4 1.4L12 16.4l-5.2-5.2 1.4-1.4L12 13.6V3h0zM5 19h14v2H5z" />
+                    </svg></span>Video Downloader</a>
+            <div><a class="link" href="/">Home</a><a class="link" href="/#faq">FAQs</a></div>
+        </nav>
+        <h1>Privacy Policy</h1>
+        <p class="upd">Last updated: 28 September 2026</p>
+    </header>
+    <main class="doc">
+        <h2>1. Overview</h2>
+        <p>This policy explains what information Video Downloader ("we", "our", "the service") handles when you use this
+            website. We keep data collection to the minimum needed to make the service work.</p>
+        <h2>2. Information we collect</h2>
+        <ul>
+            <li><strong>Video links:</strong> the URL you paste is sent to our server so we can fetch the video for you.
+            </li>
+            <li><strong>Technical data:</strong> your IP address, browser type, device type and request time, recorded
+                in standard server logs for security and to prevent abuse.</li>
+        </ul>
+        <p>We do not ask you to create an account, and we do not ask for your name, email or phone number to download a
+            video.</p>
+        <h2>3. How we use it</h2>
+        <ul>
+            <li>To process your request and deliver the video file to your device.</li>
+            <li>To keep the service secure, fix errors and stop misuse such as automated flooding.</li>
+            <li>To understand overall usage so we can improve performance.</li>
+        </ul>
+        <h2>4. Video files and storage</h2>
+        <p>Videos are processed only to fulfil your request. Temporary files are deleted from our server after the
+            download finishes or after a short period. We do not keep a library of downloaded videos.</p>
+        <h2>5. Cookies</h2>
+        <p>The site itself does not need cookies to work. If we add analytics or advertising services later, they may
+            set their own cookies and we will update this page.</p>
+        <h2>6. Sharing your information</h2>
+        <p>We do not sell your personal information. We may share limited technical data with our hosting provider, or
+            with authorities when the law requires it.</p>
+        <h2>7. Data retention</h2>
+        <p>Server logs are kept for a limited time, usually up to 30 days, and are then deleted or anonymised.</p>
+        <h2>8. Your rights</h2>
+        <p>You can ask us what technical data we hold about you, or ask us to delete it, by contacting us. We will
+            respond within a reasonable time.</p>
+        <h2>9. Children</h2>
+        <p>The service is not directed at children under 13, and we do not knowingly collect their information.</p>
+        <h2>10. Changes to this policy</h2>
+        <p>We may update this policy from time to time. The date at the top shows when it last changed.</p>
+        <h2>11. Contact</h2>
+        <p>Questions about privacy? Email us at <a
+                href="mailto:videodownloader04@gmail.com">videodownloader04@gmail.com</a>.</p>
+    </main>
+    <footer>
+        <div class="foot-inner">
+            <div>
+                <a class="logo" href="/"><span class="logo-mark"><svg viewBox="0 0 24 24">
+                            <path d="M12 3v10.6l3.8-3.8 1.4 1.4L12 16.4l-5.2-5.2 1.4-1.4L12 13.6V3h0zM5 19h14v2H5z" />
+                        </svg></span>Video Downloader</a>
+                <p>Paste a video link and save it as an MP4. Fast, free and simple.</p>
+            </div>
+            <div>
+                <h3>Quick links</h3>
+                <ul>
+                    <li><a href="/">Download</a></li>
+                    <li><a href="/#how">How it works</a></li>
+                    <li><a href="/#faq">FAQs</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="/privacy">Privacy policy</a></li>
+                    <li><a href="/terms">Terms of use</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copy">&copy; 2026 Video Downloader. Only download videos you have permission to save.</div>
+    </footer>
 </body>
+
 </html>
