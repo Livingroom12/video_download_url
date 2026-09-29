@@ -30,7 +30,7 @@ app.post('/download', (req, res) => {
         output: '-',
         format: 'best[ext=mp4]/best',
         extractorArgs: 'youtube:player_client=android',
-        noWarnings: false
+        // noWarnings: false
     }, {
         stdio: ['ignore', 'pipe', 'pipe']   // stderr have pipe karyu
     });
